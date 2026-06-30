@@ -32,26 +32,18 @@ h1 {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.card h3 {
-    font-size: 16px;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .field {
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 10px;
 }
 
 label {
     font-size: 14px;
+    display: block;
+    margin-bottom: 3px;
 }
 
 input {
+    width: 100%;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -77,9 +69,18 @@ input {
 <div class="card">
 <h3>Länge aus Gewicht</h3>
 
-<div class="form">
-<input id="gw" type="number" inputmode="decimal" placeholder="Gewicht">
-<input id="bw" type="number" inputmode="decimal" placeholder="Breite">
+<div class="field">
+<label>Gewicht (kg)</label>
+<input id="gw" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="bw" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
 <input id="dw" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
 </div>
 
@@ -89,9 +90,18 @@ input {
 <div class="card">
 <h3>Länge aus AD / ID</h3>
 
-<div class="form">
-<input id="ad" type="number" inputmode="decimal" placeholder="Außend">
-<input id="id" type="number" inputmode="decimal" placeholder="Innend">
+<div class="field">
+<label>Außendurchmesser (mm)</label>
+<input id="ad" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
 <input id="d1" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
 </div>
 
@@ -101,9 +111,18 @@ input {
 <div class="card">
 <h3>Länge aus Wickelhöhe</h3>
 
-<div class="form">
-<input id="wh" type="number" inputmode="decimal" placeholder="Wickelhöhe">
-<input id="id2" type="number" inputmode="decimal" placeholder="Innend">
+<div class="field">
+<label>Wickelhöhe (mm)</label>
+<input id="wh" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id2" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
 <input id="d2" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
 </div>
 
@@ -113,10 +132,19 @@ input {
 <div class="card">
 <h3>Außendurchmesser</h3>
 
-<div class="form">
-<input id="gw2" type="number" inputmode="decimal" placeholder="Gewicht">
-<input id="bw2" type="number" inputmode="decimal" placeholder="Breite">
-<input id="id3" type="number" inputmode="decimal" placeholder="Innend">
+<div class="field">
+<label>Gewicht (kg)</label>
+<input id="gw2" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="bw2" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id3" type="number" inputmode="decimal">
 </div>
 
 <div class="result" id="r4"></div>
@@ -125,9 +153,18 @@ input {
 <div class="card">
 <h3>Gewicht aus Länge</h3>
 
-<div class="form">
-<input id="l" type="number" inputmode="decimal" placeholder="Länge">
-<input id="b" type="number" inputmode="decimal" placeholder="Breite">
+<div class="field">
+<label>Länge (m)</label>
+<input id="l" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="b" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
 <input id="d3" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
 </div>
 
@@ -137,10 +174,19 @@ input {
 <div class="card">
 <h3>Gewicht aus AD / ID</h3>
 
-<div class="form">
-<input id="ad2" type="number" inputmode="decimal" placeholder="Außend">
-<input id="id4" type="number" inputmode="decimal" placeholder="Innend">
-<input id="b2" type="number" inputmode="decimal" placeholder="Breite">
+<div class="field">
+<label>Außendurchmesser (mm)</label>
+<input id="ad2" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id4" type="number" inputmode="decimal">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="b2" type="number" inputmode="decimal">
 </div>
 
 <div class="result" id="r6"></div>
@@ -153,41 +199,76 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// Komma → Punkt Umwandlung
+// sichere Zahl-Umwandlung
 function parse(val){
-    return parseFloat((val || "").replace(",", "."));
+    if(!val) return NaN;
+    return parseFloat(val.replace(",", "."));
 }
 
-// automatische Berechnung
+// alle Inputs beobachten
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", calculateAll);
 });
 
+function calcOK(...vals){
+    return vals.every(v => !isNaN(v) && v > 0);
+}
+
 function calculateAll(){
 
-    if(gw.value && bw.value && dw.value){
-        r1.innerText = "Länge: " + Math.round((parse(gw.value)1000)/(parse(bw.value)parse(dw.value)density)) + " m";
-    }
+    // 1
+    let v1 = parse(gw.value);
+    let v2 = parse(bw.value);
+    let v3 = parse(dw.value);
 
-    if(ad.value && id.value && d1.value){
-        r2.innerText = "Länge: " + Math.round(pi(parse(ad.value)**2 - parse(id.value)**2)/(4parse(d1.value)1000)) + " m";
-    }
+    if(calcOK(v1,v2,v3)){
+        r1.innerText = "Länge: " + Math.round((v11000)/(v2v3density)) + " m";
+    } else r1.innerText = "";
 
-    if(wh.value && id2.value && d2.value){
-        r3.innerText = "Länge: " + Math.round(piparse(wh.value)(parse(wh.value)+parse(id2.value))/(parse(d2.value)1000)) + " m";
-    }
+    // 2
+    let v4 = parse(ad.value);
+    let v5 = parse(id.value);
+    let v6 = parse(d1.value);
 
-    if(gw2.value && bw2.value && id3.value){
-        r4.innerText = "AD: " + Math.round(Math.sqrt((4000000parse(gw2.value))/(pidensityparse(bw2.value)) + parse(id3.value)**2)) + " mm";
-    }
+    if(calcOK(v4,v5,v6)){
+        r2.innerText = "Länge: " + Math.round(pi(v4v4-v5v5)/(4v61000)) + " m";
+    } else r2.innerText = "";
 
-    if(l.value && b.value && d3.value){
-        r5.innerText = "Gewicht: " + Math.round(parse(l.value)parse(b.value)parse(d3.value)density0.001) + " kg";
-    }
+    // 3
+    let v7 = parse(wh.value);
+    let v8 = parse(id2.value);
+    let v9 = parse(d2.value);
 
-    if(ad2.value && id4.value && b2.value){
-        r6.innerText = "Gewicht: " + Math.round(pidensityparse(b2.value)*(parse(ad2.value)**2 - parse(id4.value)**2) / 4000000) + " kg";
-    }
+    if(calcOK(v7,v8,v9)){
+        r3.innerText = "Länge: " + Math.round(piv7(v7+v8)/(v91000)) + " m";
+    } else r3.innerText = "";
+
+    // 4
+    let v10 = parse(gw2.value);
+    let v11 = parse(bw2.value);
+    let v12 = parse(id3.value);
+
+    if(calcOK(v10,v11,v12)){
+        r4.innerText = "AD: " + Math.round(Math.sqrt((4000000v10)/(pidensityv11)+v12v12)) + " mm";
+    } else r4.innerText = "";
+
+    // 5
+    let v13 = parse(l.value);
+    let v14 = parse(b.value);
+    let v15 = parse(d3.value);
+
+    if(calcOK(v13,v14,v15)){
+        r5.innerText = "Gewicht: " + Math.round(v13v14v15density0.001) + " kg";
+    } else r5.innerText = "";
+
+    // 6
+    let v16 = parse(ad2.value);
+    let v17 = parse(id4.value);
+    let v18 = parse(b2.value);
+
+    if(calcOK(v16,v17,v18)){
+        r6.innerText = "Gewicht: " + Math.round(pidensityv18(v16v16-v17v17)/4000000) + " kg";
+    } else r6.innerText = "";
 }
 
 </script>
