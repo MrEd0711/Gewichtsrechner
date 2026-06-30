@@ -39,7 +39,6 @@ h1 {
 label {
     font-size: 14px;
     display: block;
-    margin-bottom: 3px;
 }
 
 input {
@@ -50,11 +49,20 @@ input {
     font-size: 16px;
 }
 
+button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    background: #0078D4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
 .result {
     margin-top: 10px;
     font-weight: bold;
     color: #0078D4;
-    font-size: 18px;
 }
 </style>
 
@@ -62,29 +70,110 @@ input {
 
 <body>
 
-<h1>📏 Gewichts- & Längenrechner</h1>
+<h1>📏 Gewichtsrechner</h1>
 
 <div class="container">
 
+<!-- 1 -->
 <div class="card">
 <h3>Länge aus Gewicht</h3>
 
-<div class="field">
 <label>Gewicht (kg)</label>
 <input id="gw" type="number">
-</div>
 
-<div class="field">
 <label>Breite (mm)</label>
 <input id="bw" type="number">
-</div>
 
-<div class="field">
 <label>Dicke (µm)</label>
 <input id="dw" type="number">
+
+<button onclick="calc1()">Berechnen</button>
+<div class="result" id="r1"></div>
 </div>
 
-<div class="result" id="r1"></div>
+<!-- 2 -->
+<div class="card">
+<h3>Länge aus AD / ID</h3>
+
+<label>Außendurchmesser</label>
+<input id="ad" type="number">
+
+<label>Innendurchmesser</label>
+<input id="id" type="number">
+
+<label>Dicke (µm)</label>
+<input id="d1" type="number">
+
+<button onclick="calc2()">Berechnen</button>
+<div class="result" id="r2"></div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<h3>Länge aus Wickelhöhe</h3>
+
+<label>Wickelhöhe</label>
+<input id="wh" type="number">
+
+<label>Innendurchmesser</label>
+<input id="id2" type="number">
+
+<label>Dicke (µm)</label>
+<input id="d2" type="number">
+
+<button onclick="calc3()">Berechnen</button>
+<div class="result" id="r3"></div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<h3>Außendurchmesser</h3>
+
+<label>Gewicht</label>
+<input id="gw2" type="number">
+
+<label>Breite</label>
+<input id="bw2" type="number">
+
+<label>Innendurchmesser</label>
+<input id="id3" type="number">
+
+<button onclick="calc4()">Berechnen</button>
+<div class="result" id="r4"></div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+<h3>Gewicht aus Länge</h3>
+
+<label>Länge (m)</label>
+<input id="l" type="number">
+
+<label>Breite (mm)</label>
+<input id="b" type="number">
+
+<label>Dicke (µm)</label>
+<input id="d3" type="number">
+
+<button onclick="calc5()">Berechnen</button>
+<div class="result" id="r5"></div>
+</div>
+
+<!-- 6 -->
+<div class="card">
+<h3>Gewicht aus AD / ID</h3>
+
+<label>Außendurchmesser</label>
+<input id="ad2" type="number">
+
+<label>Innendurchmesser</label>
+<input id="id4" type="number">
+
+<label>Breite</label>
+<input id="b2" type="number">
+
+<button onclick="calc6()">Berechnen</button>
+<div class="result" id="r6"></div>
 </div>
 
 </div>
@@ -94,33 +183,40 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// sichere Werte holen
-function getVal(id){
-    return Number(document.getElementById(id).value);
+function calc1(){
+let g = Number(gw.value);
+let b = Number(bw.value);
+let d = Number(dw.value)/1000;
+
+if(g && b && d){
+r1.innerText = "Länge: " + Math.round((g1000)/(bddensity)) + " m";
+}
 }
 
-function calculateAll(){
-
-    let v1 = getVal("gw");
-    let v2 = getVal("bw");
-    let v3 = getVal("dw") / 1000;
-
-    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2 > 0 && v3 > 0){
-        document.getElementById("r1").innerText =
-            "Länge: " + Math.round((v11000)/(v2v3*density)) + " m";
-    } else {
-        document.getElementById("r1").innerText = "";
-    }
-
+function calc2(){
+let res = pi(ad.value2 - id.value2)/(4*(d1.value/1000)1000);
+r2.innerText = "Länge: " + Math.round(res) + " m";
 }
 
-// ALLE Inputs überwachen (wichtiger Fix!)
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("input").forEach(input => {
-        input.addEventListener("input", calculateAll);
-        input.addEventListener("change", calculateAll);
-    });
-});
+function calc3(){
+let res = piwh.value*(Number(wh.value)+Number(id2.value))/((d2.value/1000)1000);
+r3.innerText = "Länge: " + Math.round(res) + " m";
+}
+
+function calc4(){
+let res = Math.sqrt((4000000gw2.value)/(pidensitybw2.value) + id3.value2);
+r4.innerText = "AD: " + Math.round(res) + " mm";
+}
+
+function calc5(){
+let res = l.valueb.value(d3.value/1000)density0.001;
+r5.innerText = "Gewicht: " + Math.round(res) + " kg";
+}
+
+function calc6(){
+let res = pidensityb2.value*(ad2.value2-id4.value**2)/4000000;
+r6.innerText = "Gewicht: " + Math.round(res) + " kg";
+}
 
 </script>
 
