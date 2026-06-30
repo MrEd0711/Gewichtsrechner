@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gewichtsrechner</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f8;
+    padding: 10px;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 22px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+    background: #0078D4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+}
+
+button:hover {
+    background: #005ea3;
+}
+
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #0078D4;
+    font-size: 16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📏 Gewichts- & Längenrechner</h1>
+
+<div class="container">
+
+<!-- Länge aus Gewicht -->
+<div class="card">
+<h3>Länge aus Gewicht</h3>
+
+<div class="form">
+<div class="field">
+<label>Gewicht (kg)</label>
+<input id="gw" placeholder="z.B. 1200">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="bw" placeholder="z.B. 1000">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
+<input id="dw" placeholder="z.B. 2">
+</div>
+</div>
+
+<button onclick="calc1()">Berechnen</button>
+<div class="result" id="r1"></div>
+</div>
+
+<!-- Länge AD/ID -->
+<div class="card">
+<h3>Länge aus AD / ID</h3>
+
+<div class="form">
+<div class="field">
+<label>Außendurchmesser (mm)</label>
+<input id="ad" placeholder="z.B. 1200">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id" placeholder="z.B. 500">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
+<input id="d1" placeholder="z.B. 2">
+</div>
+</div>
+
+<button onclick="calc2()">Berechnen</button>
+<div class="result" id="r2"></div>
+</div>
+
+<!-- Wickelhöhe -->
+<div class="card">
+<h3>Länge aus Wickelhöhe</h3>
+
+<div class="form">
+<div class="field">
+<label>Wickelhöhe (mm)</label>
+<input id="wh" placeholder="z.B. 300">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id2" placeholder="z.B. 500">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
+<input id="d2" placeholder="z.B. 2">
+</div>
+</div>
+
+<button onclick="calc3()">Berechnen</button>
+<div class="result" id="r3"></div>
+</div>
+
+<!-- Außendurchmesser -->
+<div class="card">
+<h3>Außendurchmesser berechnen</h3>
+
+<div class="form">
+<div class="field">
+<label>Gewicht (kg)</label>
+<input id="gw2">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="bw2">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id3">
+</div>
+</div>
+
+<button onclick="calc4()">Berechnen</button>
+<div class="result" id="r4"></div>
+</div>
+
+<!-- Gewicht aus Länge -->
+<div class="card">
+<h3>Gewicht aus Länge</h3>
+
+<div class="form">
+<div class="field">
+<label>Länge (m)</label>
+<input id="l">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="b">
+</div>
+
+<div class="field">
+<label>Dicke (mm)</label>
+<input id="d3">
+</div>
+</div>
+
+<button onclick="calc5()">Berechnen</button>
+<div class="result" id="r5"></div>
+</div>
+
+<!-- Gewicht AD/ID -->
+<div class="card">
+<h3>Gewicht aus AD / ID</h3>
+
+<div class="form">
+<div class="field">
+<label>Außendurchmesser (mm)</label>
+<input id="ad2">
+</div>
+
+<div class="field">
+<label>Innendurchmesser (mm)</label>
+<input id="id4">
+</div>
+
+<div class="field">
+<label>Breite (mm)</label>
+<input id="b2">
+</div>
+</div>
+
+<button onclick="calc6()">Berechnen</button>
+<div class="result" id="r6"></div>
+</div>
+
+</div>
+
+<script>
+
+const pi = Math.PI;
+const density = 7.85;
+
+function check(...vals){
+    return vals.every(v => v !== "" && !isNaN(v));
+}
+
+function calc1(){
+if(!check(gw.value,bw.value,dw.value)) return alert("Bitte alles ausfüllen");
+r1.innerText = "Länge: " + ((gw.value*1000)/(bw.value*dw.value*density)).toFixed(2) + " m";
+}
+
+function calc2(){
+if(!check(ad.value,id.value,d1.value)) return alert("Bitte alles ausfüllen");
+r2.innerText = "Länge: " + (Math.PI*(ad.value**2 - id.value**2)/(4*d1.value*1000)).toFixed(2) + " m";
+}
+
+function calc3(){
+if(!check(wh.value,id2.value,d2.value)) return alert("Bitte alles ausfüllen");
+r3.innerText = "Länge: " + (Math.PI*wh.value*(parseFloat(wh.value)+parseFloat(id2.value))/(d2.value*1000)).toFixed(2) + " m";
+}
+
+function calc4(){
+if(!check(gw2.value,bw2.value,id3.value)) return alert("Bitte alles ausfüllen");
+r4.innerText = "Außendurchmesser: " + Math.sqrt((4000000*gw2.value)/(Math.PI*density*bw2.value)+id3.value**2).toFixed(2) + " mm";
+}
+
+function calc5(){
+if(!check(l.value,b.value,d3.value)) return alert("Bitte alles ausfüllen");
+r5.innerText = "Gewicht: " + (l.value*b.value*d3.value*density*0.001).toFixed(2) + " kg";
+}
+
+function calc6(){
+if(!check(ad2.value,id4.value,b2.value)) return alert("Bitte alles ausfüllen");
+r6.innerText = "Gewicht: " + (Math.PI*density*b2.value*(ad2.value**2-id4.value**2)/4000000).toFixed(2) + " kg";
+}
+
+</script>
+
+</body>
+</html>
