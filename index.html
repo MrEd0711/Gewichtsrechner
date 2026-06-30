@@ -199,74 +199,64 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// sichere Zahl-Umwandlung
+// Komma → Punkt
 function parse(val){
     if(!val) return NaN;
     return parseFloat(val.replace(",", "."));
 }
 
-// alle Inputs beobachten
+// Eingaben überwachen
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", calculateAll);
 });
 
-function calcOK(...vals){
-    return vals.every(v => !isNaN(v) && v > 0);
-}
-
 function calculateAll(){
 
-    // 1
     let v1 = parse(gw.value);
     let v2 = parse(bw.value);
     let v3 = parse(dw.value);
 
-    if(calcOK(v1,v2,v3)){
+    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2>0 && v3>0){
         r1.innerText = "Länge: " + Math.round((v11000)/(v2v3density)) + " m";
     } else r1.innerText = "";
 
-    // 2
     let v4 = parse(ad.value);
     let v5 = parse(id.value);
     let v6 = parse(d1.value);
 
-    if(calcOK(v4,v5,v6)){
+    if(!isNaN(v4) && !isNaN(v5) && !isNaN(v6) && v6>0){
         r2.innerText = "Länge: " + Math.round(pi(v4v4-v5v5)/(4v61000)) + " m";
     } else r2.innerText = "";
 
-    // 3
     let v7 = parse(wh.value);
     let v8 = parse(id2.value);
     let v9 = parse(d2.value);
 
-    if(calcOK(v7,v8,v9)){
+    if(!isNaN(v7) && !isNaN(v8) && !isNaN(v9) && v9>0){
         r3.innerText = "Länge: " + Math.round(piv7(v7+v8)/(v91000)) + " m";
     } else r3.innerText = "";
 
-    // 4
     let v10 = parse(gw2.value);
     let v11 = parse(bw2.value);
     let v12 = parse(id3.value);
 
-    if(calcOK(v10,v11,v12)){
+    if(!isNaN(v10) && !isNaN(v11) && !isNaN(v12) && v11>0){
         r4.innerText = "AD: " + Math.round(Math.sqrt((4000000v10)/(pidensityv11)+v12v12)) + " mm";
     } else r4.innerText = "";
 
-    // 5
     let v13 = parse(l.value);
     let v14 = parse(b.value);
     let v15 = parse(d3.value);
 
-    if(calcOK(v13,v14,v15)){
+    if(!isNaN(v13) && !isNaN(v14) && !isNaN(v15)){
         r5.innerText = "Gewicht: " + Math.round(v13v14v15density0.001) + " kg";
     } else r5.innerText = "";
 
-    // 6
     let v16 = parse(ad2.value);
     let v17 = parse(id4.value);
     let v18 = parse(b2.value);
 
-    if(calcOK(v16,v17,v18)){
+    if(!isNaN(v16) && !isNaN(v17) && !isNaN(v18)){
         r6.innerText = "Gewicht: " + Math.round(pidensityv18(v16v16-v17v17)/4000000) + " kg";
     } else r6.innerText = "";
 }
