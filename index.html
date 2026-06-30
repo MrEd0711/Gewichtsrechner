@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Gewichtsrechner</title>
 
 <style>
@@ -11,12 +10,6 @@ body {
     font-family: Arial;
     background: #f4f6f8;
     padding: 10px;
-    margin: 0;
-}
-
-h1 {
-    text-align: center;
-    font-size: 22px;
 }
 
 .container {
@@ -32,31 +25,28 @@ h1 {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.field {
-    margin-bottom: 10px;
-}
-
 label {
-    font-size: 14px;
     display: block;
+    margin-top: 8px;
 }
 
 input {
     width: 100%;
     padding: 10px;
+    font-size: 18px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 16px;
 }
 
 button {
-    margin-top: 10px;
+    margin-top: 12px;
     padding: 12px;
     width: 100%;
     background: #0078D4;
     color: white;
     border: none;
     border-radius: 8px;
+    font-size: 16px;
 }
 
 .result {
@@ -65,12 +55,9 @@ button {
     color: #0078D4;
 }
 </style>
-
 </head>
 
 <body>
-
-<h1>📏 Gewichtsrechner</h1>
 
 <div class="container">
 
@@ -79,13 +66,13 @@ button {
 <h3>Länge aus Gewicht</h3>
 
 <label>Gewicht (kg)</label>
-<input id="gw" type="number">
+<input id="gw" type="text" inputmode="decimal">
 
 <label>Breite (mm)</label>
-<input id="bw" type="number">
+<input id="bw" type="text" inputmode="decimal">
 
 <label>Dicke (µm)</label>
-<input id="dw" type="number">
+<input id="dw" type="text" inputmode="decimal">
 
 <button onclick="calc1()">Berechnen</button>
 <div class="result" id="r1"></div>
@@ -96,13 +83,13 @@ button {
 <h3>Länge aus AD / ID</h3>
 
 <label>Außendurchmesser</label>
-<input id="ad" type="number">
+<input id="ad" type="text" inputmode="decimal">
 
 <label>Innendurchmesser</label>
-<input id="id" type="number">
+<input id="id" type="text" inputmode="decimal">
 
 <label>Dicke (µm)</label>
-<input id="d1" type="number">
+<input id="d1" type="text" inputmode="decimal">
 
 <button onclick="calc2()">Berechnen</button>
 <div class="result" id="r2"></div>
@@ -113,13 +100,13 @@ button {
 <h3>Länge aus Wickelhöhe</h3>
 
 <label>Wickelhöhe</label>
-<input id="wh" type="number">
+<input id="wh" type="text" inputmode="decimal">
 
 <label>Innendurchmesser</label>
-<input id="id2" type="number">
+<input id="id2" type="text" inputmode="decimal">
 
 <label>Dicke (µm)</label>
-<input id="d2" type="number">
+<input id="d2" type="text" inputmode="decimal">
 
 <button onclick="calc3()">Berechnen</button>
 <div class="result" id="r3"></div>
@@ -130,13 +117,13 @@ button {
 <h3>Außendurchmesser</h3>
 
 <label>Gewicht</label>
-<input id="gw2" type="number">
+<input id="gw2" type="text" inputmode="decimal">
 
 <label>Breite</label>
-<input id="bw2" type="number">
+<input id="bw2" type="text" inputmode="decimal">
 
 <label>Innendurchmesser</label>
-<input id="id3" type="number">
+<input id="id3" type="text" inputmode="decimal">
 
 <button onclick="calc4()">Berechnen</button>
 <div class="result" id="r4"></div>
@@ -147,13 +134,13 @@ button {
 <h3>Gewicht aus Länge</h3>
 
 <label>Länge (m)</label>
-<input id="l" type="number">
+<input id="l" type="text" inputmode="decimal">
 
-<label>Breite (mm)</label>
-<input id="b" type="number">
+<label>Breite</label>
+<input id="b" type="text" inputmode="decimal">
 
 <label>Dicke (µm)</label>
-<input id="d3" type="number">
+<input id="d3" type="text" inputmode="decimal">
 
 <button onclick="calc5()">Berechnen</button>
 <div class="result" id="r5"></div>
@@ -164,13 +151,13 @@ button {
 <h3>Gewicht aus AD / ID</h3>
 
 <label>Außendurchmesser</label>
-<input id="ad2" type="number">
+<input id="ad2" type="text" inputmode="decimal">
 
 <label>Innendurchmesser</label>
-<input id="id4" type="number">
+<input id="id4" type="text" inputmode="decimal">
 
 <label>Breite</label>
-<input id="b2" type="number">
+<input id="b2" type="text" inputmode="decimal">
 
 <button onclick="calc6()">Berechnen</button>
 <div class="result" id="r6"></div>
@@ -183,39 +170,84 @@ button {
 const pi = Math.PI;
 const density = 7.85;
 
+// sichere Zahl
+function num(id){
+    let v = document.getElementById(id).value;
+    if(!v) return NaN;
+    v = v.replace(",", ".");
+    return parseFloat(v);
+}
+
+// 1
 function calc1(){
-let g = Number(gw.value);
-let b = Number(bw.value);
-let d = Number(dw.value)/1000;
+let g = num("gw");
+let b = num("bw");
+let d = num("dw") / 1000;
 
-if(g && b && d){
-r1.innerText = "Länge: " + Math.round((g1000)/(bddensity)) + " m";
+if(!isNaN(g) && !isNaN(b) && !isNaN(d)){
+let r = (g1000)/(bddensity);
+document.getElementById("r1").innerText = "Länge: " + Math.round(r) + " m";
 }
 }
 
+// 2
 function calc2(){
-let res = pi(ad.value2 - id.value2)/(4*(d1.value/1000)1000);
-r2.innerText = "Länge: " + Math.round(res) + " m";
+let ad = num("ad");
+let id = num("id");
+let d = num("d1")/1000;
+
+if(!isNaN(ad) && !isNaN(id) && !isNaN(d)){
+let r = pi(adad - idid)/(4d1000);
+document.getElementById("r2").innerText = "Länge: " + Math.round(r) + " m";
+}
 }
 
+// 3
 function calc3(){
-let res = piwh.value*(Number(wh.value)+Number(id2.value))/((d2.value/1000)1000);
-r3.innerText = "Länge: " + Math.round(res) + " m";
+let wh = num("wh");
+let id = num("id2");
+let d = num("d2")/1000;
+
+if(!isNaN(wh) && !isNaN(id) && !isNaN(d)){
+let r = piwh(wh+id)/(d1000);
+document.getElementById("r3").innerText = "Länge: " + Math.round(r) + " m";
+}
 }
 
+// 4
 function calc4(){
-let res = Math.sqrt((4000000gw2.value)/(pidensitybw2.value) + id3.value2);
-r4.innerText = "AD: " + Math.round(res) + " mm";
+let g = num("gw2");
+let b = num("bw2");
+let id = num("id3");
+
+if(!isNaN(g) && !isNaN(b) && !isNaN(id)){
+let r = Math.sqrt((4000000g)/(pidensityb)+idid);
+document.getElementById("r4").innerText = "AD: " + Math.round(r) + " mm";
+}
 }
 
+// 5
 function calc5(){
-let res = l.valueb.value(d3.value/1000)density0.001;
-r5.innerText = "Gewicht: " + Math.round(res) + " kg";
+let l = num("l");
+let b = num("b");
+let d = num("d3")/1000;
+
+if(!isNaN(l) && !isNaN(b) && !isNaN(d)){
+let r = lbddensity0.001;
+document.getElementById("r5").innerText = "Gewicht: " + Math.round(r) + " kg";
+}
 }
 
+// 6
 function calc6(){
-let res = pidensityb2.value*(ad2.value2-id4.value**2)/4000000;
-r6.innerText = "Gewicht: " + Math.round(res) + " kg";
+let ad = num("ad2");
+let id = num("id4");
+let b = num("b2");
+
+if(!isNaN(ad) && !isNaN(id) && !isNaN(b)){
+let r = pidensityb(adad-idid)/4000000;
+document.getElementById("r6").innerText = "Gewicht: " + Math.round(r) + " kg";
+}
 }
 
 </script>
