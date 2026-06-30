@@ -87,111 +87,6 @@ input {
 <div class="result" id="r1"></div>
 </div>
 
-<div class="card">
-<h3>Länge aus AD / ID</h3>
-
-<div class="field">
-<label>Außendurchmesser (mm)</label>
-<input id="ad" type="number">
-</div>
-
-<div class="field">
-<label>Innendurchmesser (mm)</label>
-<input id="id" type="number">
-</div>
-
-<div class="field">
-<label>Dicke (µm)</label>
-<input id="d1" type="number">
-</div>
-
-<div class="result" id="r2"></div>
-</div>
-
-<div class="card">
-<h3>Länge aus Wickelhöhe</h3>
-
-<div class="field">
-<label>Wickelhöhe (mm)</label>
-<input id="wh" type="number">
-</div>
-
-<div class="field">
-<label>Innendurchmesser (mm)</label>
-<input id="id2" type="number">
-</div>
-
-<div class="field">
-<label>Dicke (µm)</label>
-<input id="d2" type="number">
-</div>
-
-<div class="result" id="r3"></div>
-</div>
-
-<div class="card">
-<h3>Außendurchmesser</h3>
-
-<div class="field">
-<label>Gewicht (kg)</label>
-<input id="gw2" type="number">
-</div>
-
-<div class="field">
-<label>Breite (mm)</label>
-<input id="bw2" type="number">
-</div>
-
-<div class="field">
-<label>Innendurchmesser (mm)</label>
-<input id="id3" type="number">
-</div>
-
-<div class="result" id="r4"></div>
-</div>
-
-<div class="card">
-<h3>Gewicht aus Länge</h3>
-
-<div class="field">
-<label>Länge (m)</label>
-<input id="l" type="number">
-</div>
-
-<div class="field">
-<label>Breite (mm)</label>
-<input id="b" type="number">
-</div>
-
-<div class="field">
-<label>Dicke (µm)</label>
-<input id="d3" type="number">
-</div>
-
-<div class="result" id="r5"></div>
-</div>
-
-<div class="card">
-<h3>Gewicht aus AD / ID</h3>
-
-<div class="field">
-<label>Außendurchmesser (mm)</label>
-<input id="ad2" type="number">
-</div>
-
-<div class="field">
-<label>Innendurchmesser (mm)</label>
-<input id="id4" type="number">
-</div>
-
-<div class="field">
-<label>Breite (mm)</label>
-<input id="b2" type="number">
-</div>
-
-<div class="result" id="r6"></div>
-</div>
-
 </div>
 
 <script>
@@ -199,67 +94,33 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// Inputs überwachen
-document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", calculateAll);
-});
+// sichere Werte holen
+function getVal(id){
+    return Number(document.getElementById(id).value);
+}
 
 function calculateAll(){
 
-    // Länge aus Gewicht
-    let v1 = Number(gw.value);
-    let v2 = Number(bw.value);
-    let v3 = Number(dw.value) / 1000;
+    let v1 = getVal("gw");
+    let v2 = getVal("bw");
+    let v3 = getVal("dw") / 1000;
 
-    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2>0 && v3>0){
-        r1.innerText = "Länge: " + Math.round((v11000)/(v2v3density)) + " m";
-    } else r1.innerText = "";
+    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2 > 0 && v3 > 0){
+        document.getElementById("r1").innerText =
+            "Länge: " + Math.round((v11000)/(v2v3*density)) + " m";
+    } else {
+        document.getElementById("r1").innerText = "";
+    }
 
-    // AD / ID
-    let v4 = Number(ad.value);
-    let v5 = Number(id.value);
-    let v6 = Number(d1.value) / 1000;
-
-    if(!isNaN(v4) && !isNaN(v5) && !isNaN(v6) && v6>0){
-        r2.innerText = "Länge: " + Math.round(pi(v4v4-v5v5)/(4v61000)) + " m";
-    } else r2.innerText = "";
-
-    // Wickelhöhe
-    let v7 = Number(wh.value);
-    let v8 = Number(id2.value);
-    let v9 = Number(d2.value) / 1000;
-
-    if(!isNaN(v7) && !isNaN(v8) && !isNaN(v9) && v9>0){
-        r3.innerText = "Länge: " + Math.round(piv7(v7+v8)/(v91000)) + " m";
-    } else r3.innerText = "";
-
-    // Außendurchmesser
-    let v10 = Number(gw2.value);
-    let v11 = Number(bw2.value);
-    let v12 = Number(id3.value);
-
-    if(!isNaN(v10) && !isNaN(v11) && !isNaN(v12) && v11>0){
-        r4.innerText = "AD: " + Math.round(Math.sqrt((4000000v10)/(pidensityv11)+v12v12)) + " mm";
-    } else r4.innerText = "";
-
-    // Gewicht aus Länge
-    let v13 = Number(l.value);
-    let v14 = Number(b.value);
-    let v15 = Number(d3.value) / 1000;
-
-    if(!isNaN(v13) && !isNaN(v14) && !isNaN(v15)){
-        r5.innerText = "Gewicht: " + Math.round(v13v14v15density0.001) + " kg";
-    } else r5.innerText = "";
-
-    // Gewicht AD/ID
-    let v16 = Number(ad2.value);
-    let v17 = Number(id4.value);
-    let v18 = Number(b2.value);
-
-    if(!isNaN(v16) && !isNaN(v17) && !isNaN(v18)){
-        r6.innerText = "Gewicht: " + Math.round(pidensityv18(v16v16-v17v17)/4000000) + " kg";
-    } else r6.innerText = "";
 }
+
+// ALLE Inputs überwachen (wichtiger Fix!)
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", calculateAll);
+        input.addEventListener("change", calculateAll);
+    });
+});
 
 </script>
 
