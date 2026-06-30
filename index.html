@@ -71,17 +71,17 @@ input {
 
 <div class="field">
 <label>Gewicht (kg)</label>
-<input id="gw" type="number" inputmode="decimal">
+<input id="gw" type="number">
 </div>
 
 <div class="field">
 <label>Breite (mm)</label>
-<input id="bw" type="number" inputmode="decimal">
+<input id="bw" type="number">
 </div>
 
 <div class="field">
-<label>Dicke (mm)</label>
-<input id="dw" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
+<label>Dicke (µm)</label>
+<input id="dw" type="number" value="200">
 </div>
 
 <div class="result" id="r1"></div>
@@ -92,17 +92,17 @@ input {
 
 <div class="field">
 <label>Außendurchmesser (mm)</label>
-<input id="ad" type="number" inputmode="decimal">
+<input id="ad" type="number">
 </div>
 
 <div class="field">
 <label>Innendurchmesser (mm)</label>
-<input id="id" type="number" inputmode="decimal">
+<input id="id" type="number">
 </div>
 
 <div class="field">
-<label>Dicke (mm)</label>
-<input id="d1" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
+<label>Dicke (µm)</label>
+<input id="d1" type="number" value="200">
 </div>
 
 <div class="result" id="r2"></div>
@@ -113,17 +113,17 @@ input {
 
 <div class="field">
 <label>Wickelhöhe (mm)</label>
-<input id="wh" type="number" inputmode="decimal">
+<input id="wh" type="number">
 </div>
 
 <div class="field">
 <label>Innendurchmesser (mm)</label>
-<input id="id2" type="number" inputmode="decimal">
+<input id="id2" type="number">
 </div>
 
 <div class="field">
-<label>Dicke (mm)</label>
-<input id="d2" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
+<label>Dicke (µm)</label>
+<input id="d2" type="number" value="200">
 </div>
 
 <div class="result" id="r3"></div>
@@ -134,17 +134,17 @@ input {
 
 <div class="field">
 <label>Gewicht (kg)</label>
-<input id="gw2" type="number" inputmode="decimal">
+<input id="gw2" type="number">
 </div>
 
 <div class="field">
 <label>Breite (mm)</label>
-<input id="bw2" type="number" inputmode="decimal">
+<input id="bw2" type="number">
 </div>
 
 <div class="field">
 <label>Innendurchmesser (mm)</label>
-<input id="id3" type="number" inputmode="decimal">
+<input id="id3" type="number">
 </div>
 
 <div class="result" id="r4"></div>
@@ -155,17 +155,17 @@ input {
 
 <div class="field">
 <label>Länge (m)</label>
-<input id="l" type="number" inputmode="decimal">
+<input id="l" type="number">
 </div>
 
 <div class="field">
 <label>Breite (mm)</label>
-<input id="b" type="number" inputmode="decimal">
+<input id="b" type="number">
 </div>
 
 <div class="field">
-<label>Dicke (mm)</label>
-<input id="d3" type="text" inputmode="decimal" value="0," pattern="[0-9,]*">
+<label>Dicke (µm)</label>
+<input id="d3" type="number" value="200">
 </div>
 
 <div class="result" id="r5"></div>
@@ -176,17 +176,17 @@ input {
 
 <div class="field">
 <label>Außendurchmesser (mm)</label>
-<input id="ad2" type="number" inputmode="decimal">
+<input id="ad2" type="number">
 </div>
 
 <div class="field">
 <label>Innendurchmesser (mm)</label>
-<input id="id4" type="number" inputmode="decimal">
+<input id="id4" type="number">
 </div>
 
 <div class="field">
 <label>Breite (mm)</label>
-<input id="b2" type="number" inputmode="decimal">
+<input id="b2" type="number">
 </div>
 
 <div class="result" id="r6"></div>
@@ -199,64 +199,59 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// Komma → Punkt
-function parse(val){
-    if(!val) return NaN;
-    return parseFloat(val.replace(",", "."));
-}
-
-// Eingaben überwachen
+// alle Inputs überwachen
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", calculateAll);
 });
 
 function calculateAll(){
 
-    let v1 = parse(gw.value);
-    let v2 = parse(bw.value);
-    let v3 = parse(dw.value);
+    // µm → mm Umrechnung
+    let v1 = gw.value;
+    let v2 = bw.value;
+    let v3 = dw.value / 1000;
 
-    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2>0 && v3>0){
+    if(v1 && v2 && v3){
         r1.innerText = "Länge: " + Math.round((v11000)/(v2v3density)) + " m";
     } else r1.innerText = "";
 
-    let v4 = parse(ad.value);
-    let v5 = parse(id.value);
-    let v6 = parse(d1.value);
+    let v4 = ad.value;
+    let v5 = id.value;
+    let v6 = d1.value / 1000;
 
-    if(!isNaN(v4) && !isNaN(v5) && !isNaN(v6) && v6>0){
+    if(v4 && v5 && v6){
         r2.innerText = "Länge: " + Math.round(pi(v4v4-v5v5)/(4v61000)) + " m";
     } else r2.innerText = "";
 
-    let v7 = parse(wh.value);
-    let v8 = parse(id2.value);
-    let v9 = parse(d2.value);
+    let v7 = wh.value;
+    let v8 = id2.value;
+    let v9 = d2.value / 1000;
 
-    if(!isNaN(v7) && !isNaN(v8) && !isNaN(v9) && v9>0){
+    if(v7 && v8 && v9){
         r3.innerText = "Länge: " + Math.round(piv7(v7+v8)/(v91000)) + " m";
     } else r3.innerText = "";
 
-    let v10 = parse(gw2.value);
-    let v11 = parse(bw2.value);
-    let v12 = parse(id3.value);
+    let v10 = gw2.value;
+    let v11 = bw2.value;
+    let v12 = id3.value;
 
-    if(!isNaN(v10) && !isNaN(v11) && !isNaN(v12) && v11>0){
+    if(v10 && v11 && v12){
         r4.innerText = "AD: " + Math.round(Math.sqrt((4000000v10)/(pidensityv11)+v12v12)) + " mm";
     } else r4.innerText = "";
 
-    let v13 = parse(l.value);
-    let v14 = parse(b.value);
-    let v15 = parse(d3.value);
+    let v13 = l.value;
+    let v14 = b.value;
+    let v15 = d3.value / 1000;
 
-    if(!isNaN(v13) && !isNaN(v14) && !isNaN(v15)){
+    if(v13 && v14 && v15){
         r5.innerText = "Gewicht: " + Math.round(v13v14v15density0.001) + " kg";
     } else r5.innerText = "";
 
-    let v16 = parse(ad2.value);
-    let v17 = parse(id4.value);
-    let v18 = parse(b2.value);
+    let v16 = ad2.value;
+    let v17 = id4.value;
+    let v18 = b2.value;
 
-    if(!isNaN(v16) && !isNaN(v17) && !isNaN(v18)){
+    if(v16 && v17 && v18){
         r6.innerText = "Gewicht: " + Math.round(pidensityv18(v16v16-v17v17)/4000000) + " kg";
     } else r6.innerText = "";
 }
