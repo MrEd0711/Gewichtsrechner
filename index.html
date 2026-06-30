@@ -6,13 +6,54 @@
 <title>Gewichtsrechner</title>
 
 <style>
-body { font-family: Arial; background:#f4f6f8; padding:10px; }
-.container { max-width:600px; margin:auto; }
-.card { background:white; padding:15px; margin-bottom:12px; border-radius:12px; }
-label { display:block; margin-top:8px; }
-input { width:100%; padding:10px; font-size:18px; }
-button { margin-top:10px; width:100%; padding:12px; }
-.result { margin-top:10px; font-weight:bold; color:#0078D4; }
+body {
+    font-family: Arial;
+    background: #f4f6f8;
+    padding: 10px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+label {
+    display: block;
+    margin-top: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    margin-top: 12px;
+    padding: 12px;
+    width: 100%;
+    background: #0078D4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #0078D4;
+}
 </style>
 </head>
 
@@ -23,85 +64,103 @@ button { margin-top:10px; width:100%; padding:12px; }
 <!-- 1 -->
 <div class="card">
 <h3>Länge aus Gewicht</h3>
-<label>Gewicht</label>
+
+<label>Gewicht (kg)</label>
 <input id="gw" type="text" inputmode="decimal">
-<label>Breite</label>
+
+<label>Breite (mm)</label>
 <input id="bw" type="text" inputmode="decimal">
+
 <label>Dicke (µm)</label>
 <input id="dw" type="text" inputmode="decimal">
 
 <button onclick="calc1()">Berechnen</button>
-<div id="r1" class="result"></div>
+<div class="result" id="r1"></div>
 </div>
 
 <!-- 2 -->
 <div class="card">
 <h3>Länge aus AD / ID</h3>
-<label>AD</label>
+
+<label>Außendurchmesser</label>
 <input id="ad" type="text" inputmode="decimal">
-<label>ID</label>
+
+<label>Innendurchmesser</label>
 <input id="id" type="text" inputmode="decimal">
+
 <label>Dicke (µm)</label>
 <input id="d1" type="text" inputmode="decimal">
 
 <button onclick="calc2()">Berechnen</button>
-<div id="r2" class="result"></div>
+<div class="result" id="r2"></div>
 </div>
 
 <!-- 3 -->
 <div class="card">
-<h3>Länge Wickelhöhe</h3>
-<label>WH</label>
+<h3>Länge aus Wickelhöhe</h3>
+
+<label>Wickelhöhe</label>
 <input id="wh" type="text" inputmode="decimal">
-<label>ID</label>
+
+<label>Innendurchmesser</label>
 <input id="id2" type="text" inputmode="decimal">
+
 <label>Dicke (µm)</label>
 <input id="d2" type="text" inputmode="decimal">
 
 <button onclick="calc3()">Berechnen</button>
-<div id="r3" class="result"></div>
+<div class="result" id="r3"></div>
 </div>
 
 <!-- 4 -->
 <div class="card">
 <h3>Außendurchmesser</h3>
+
 <label>Gewicht</label>
 <input id="gw2" type="text" inputmode="decimal">
+
 <label>Breite</label>
 <input id="bw2" type="text" inputmode="decimal">
-<label>ID</label>
+
+<label>Innendurchmesser</label>
 <input id="id3" type="text" inputmode="decimal">
 
 <button onclick="calc4()">Berechnen</button>
-<div id="r4" class="result"></div>
+<div class="result" id="r4"></div>
 </div>
 
 <!-- 5 -->
 <div class="card">
 <h3>Gewicht aus Länge</h3>
-<label>Länge</label>
+
+<label>Länge (m)</label>
 <input id="l" type="text" inputmode="decimal">
+
 <label>Breite</label>
 <input id="b" type="text" inputmode="decimal">
+
 <label>Dicke (µm)</label>
 <input id="d3" type="text" inputmode="decimal">
 
 <button onclick="calc5()">Berechnen</button>
-<div id="r5" class="result"></div>
+<div class="result" id="r5"></div>
 </div>
 
 <!-- 6 -->
 <div class="card">
 <h3>Gewicht aus AD / ID</h3>
-<label>AD</label>
+
+<label>Außendurchmesser</label>
 <input id="ad2" type="text" inputmode="decimal">
-<label>ID</label>
+
+<label>Innendurchmesser</label>
 <input id="id4" type="text" inputmode="decimal">
+
 <label>Breite</label>
 <input id="b2" type="text" inputmode="decimal">
 
 <button onclick="calc6()">Berechnen</button>
-<div id="r6" class="result"></div>
+<div class="result" id="r6"></div>
 </div>
 
 </div>
@@ -111,64 +170,84 @@ button { margin-top:10px; width:100%; padding:12px; }
 const pi = Math.PI;
 const density = 7.85;
 
+// sichere Zahl
 function num(id){
     let v = document.getElementById(id).value;
     if(!v) return NaN;
-    return parseFloat(v.replace(",", "."));
+    v = v.replace(",", ".");
+    return parseFloat(v);
 }
 
 // 1
 function calc1(){
-let g=num("gw"), b=num("bw"), d=num("dw")/1000;
-let r = (g1000)/(bddensity);
-if(!isNaN(r)){
-document.getElementById("r1").innerText = "Länge: "+Math.round(r)+" m";
-}
+    let g = num("gw");
+    let b = num("bw");
+    let d = num("dw") / 1000;
+
+    if(!isNaN(g) && !isNaN(b) && !isNaN(d)){
+        let r = (g * 1000) / (b * d * density);
+        document.getElementById("r1").innerText = "Länge: " + Math.round(r) + " m";
+    }
 }
 
 // 2
 function calc2(){
-let ad=num("ad"), id=num("id"), d=num("d1")/1000;
-let r = pi(adad-idid)/(4d1000);
-if(!isNaN(r)){
-document.getElementById("r2").innerText = "Länge: "+Math.round(r)+" m";
-}
+    let ad = num("ad");
+    let id = num("id");
+    let d = num("d1") / 1000;
+
+    if(!isNaN(ad) && !isNaN(id) && !isNaN(d)){
+        let r = pi * (ad*ad - id*id) / (4 * d * 1000);
+        document.getElementById("r2").innerText = "Länge: " + Math.round(r) + " m";
+    }
 }
 
 // 3
 function calc3(){
-let wh=num("wh"), id=num("id2"), d=num("d2")/1000;
-let r = piwh(wh+id)/(d1000);
-if(!isNaN(r)){
-document.getElementById("r3").innerText = "Länge: "+Math.round(r)+" m";
-}
+    let wh = num("wh");
+    let id = num("id2");
+    let d = num("d2") / 1000;
+
+    if(!isNaN(wh) && !isNaN(id) && !isNaN(d)){
+        let r = pi * wh * (wh + id) / (d * 1000);
+        document.getElementById("r3").innerText = "Länge: " + Math.round(r) + " m";
+    }
 }
 
 // 4
 function calc4(){
-let g=num("gw2"), b=num("bw2"), id=num("id3");
-let r = Math.sqrt((4000000g)/(pidensityb)+idid);
-if(!isNaN(r)){
-document.getElementById("r4").innerText = "AD: "+Math.round(r)+" mm";
-}
+    let g = num("gw2");
+    let b = num("bw2");
+    let id = num("id3");
+
+    if(!isNaN(g) && !isNaN(b) && !isNaN(id)){
+        let r = Math.sqrt((4000000 * g) / (pi * density * b) + id*id);
+        document.getElementById("r4").innerText = "AD: " + Math.round(r) + " mm";
+    }
 }
 
 // 5
 function calc5(){
-let l=num("l"), b=num("b"), d=num("d3")/1000;
-let r = lbddensity0.001;
-if(!isNaN(r)){
-document.getElementById("r5").innerText = "Gewicht: "+Math.round(r)+" kg";
-}
+    let l = num("l");
+    let b = num("b");
+    let d = num("d3") / 1000;
+
+    if(!isNaN(l) && !isNaN(b) && !isNaN(d)){
+        let r = l * b * d * density * 0.001;
+        document.getElementById("r5").innerText = "Gewicht: " + Math.round(r) + " kg";
+    }
 }
 
 // 6
 function calc6(){
-let ad=num("ad2"), id=num("id4"), b=num("b2");
-let r = pidensityb(adad-idid)/4000000;
-if(!isNaN(r)){
-document.getElementById("r6").innerText = "Gewicht: "+Math.round(r)+" kg";
-}
+    let ad = num("ad2");
+    let id = num("id4");
+    let b = num("b2");
+
+    if(!isNaN(ad) && !isNaN(id) && !isNaN(b)){
+        let r = pi * density * b * (ad*ad - id*id) / 4000000;
+        document.getElementById("r6").innerText = "Gewicht: " + Math.round(r) + " kg";
+    }
 }
 
 </script>
