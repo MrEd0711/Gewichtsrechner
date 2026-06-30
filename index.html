@@ -20,11 +20,12 @@ button { margin-top:10px; width:100%; padding:12px; }
 
 <div class="container">
 
+<!-- 1 -->
 <div class="card">
 <h3>Länge aus Gewicht</h3>
-<label>Gewicht (kg)</label>
+<label>Gewicht</label>
 <input id="gw" type="text" inputmode="decimal">
-<label>Breite (mm)</label>
+<label>Breite</label>
 <input id="bw" type="text" inputmode="decimal">
 <label>Dicke (µm)</label>
 <input id="dw" type="text" inputmode="decimal">
@@ -33,11 +34,12 @@ button { margin-top:10px; width:100%; padding:12px; }
 <div id="r1" class="result"></div>
 </div>
 
+<!-- 2 -->
 <div class="card">
 <h3>Länge aus AD / ID</h3>
-<label>AD (mm)</label>
+<label>AD</label>
 <input id="ad" type="text" inputmode="decimal">
-<label>ID (mm)</label>
+<label>ID</label>
 <input id="id" type="text" inputmode="decimal">
 <label>Dicke (µm)</label>
 <input id="d1" type="text" inputmode="decimal">
@@ -46,11 +48,12 @@ button { margin-top:10px; width:100%; padding:12px; }
 <div id="r2" class="result"></div>
 </div>
 
+<!-- 3 -->
 <div class="card">
 <h3>Länge Wickelhöhe</h3>
-<label>WH (mm)</label>
+<label>WH</label>
 <input id="wh" type="text" inputmode="decimal">
-<label>ID (mm)</label>
+<label>ID</label>
 <input id="id2" type="text" inputmode="decimal">
 <label>Dicke (µm)</label>
 <input id="d2" type="text" inputmode="decimal">
@@ -59,6 +62,7 @@ button { margin-top:10px; width:100%; padding:12px; }
 <div id="r3" class="result"></div>
 </div>
 
+<!-- 4 -->
 <div class="card">
 <h3>Außendurchmesser</h3>
 <label>Gewicht</label>
@@ -72,9 +76,10 @@ button { margin-top:10px; width:100%; padding:12px; }
 <div id="r4" class="result"></div>
 </div>
 
+<!-- 5 -->
 <div class="card">
 <h3>Gewicht aus Länge</h3>
-<label>Länge (m)</label>
+<label>Länge</label>
 <input id="l" type="text" inputmode="decimal">
 <label>Breite</label>
 <input id="b" type="text" inputmode="decimal">
@@ -85,6 +90,7 @@ button { margin-top:10px; width:100%; padding:12px; }
 <div id="r5" class="result"></div>
 </div>
 
+<!-- 6 -->
 <div class="card">
 <h3>Gewicht aus AD / ID</h3>
 <label>AD</label>
@@ -111,40 +117,58 @@ function num(id){
     return parseFloat(v.replace(",", "."));
 }
 
+// 1
 function calc1(){
 let g=num("gw"), b=num("bw"), d=num("dw")/1000;
 let r = (g1000)/(bddensity);
-if(!isNaN(r)) r1.innerText="Länge: "+Math.round(r)+" m";
+if(!isNaN(r)){
+document.getElementById("r1").innerText = "Länge: "+Math.round(r)+" m";
+}
 }
 
+// 2
 function calc2(){
 let ad=num("ad"), id=num("id"), d=num("d1")/1000;
 let r = pi(adad-idid)/(4d1000);
-if(!isNaN(r)) r2.innerText="Länge: "+Math.round(r)+" m";
+if(!isNaN(r)){
+document.getElementById("r2").innerText = "Länge: "+Math.round(r)+" m";
+}
 }
 
+// 3
 function calc3(){
 let wh=num("wh"), id=num("id2"), d=num("d2")/1000;
 let r = piwh(wh+id)/(d1000);
-if(!isNaN(r)) r3.innerText="Länge: "+Math.round(r)+" m";
+if(!isNaN(r)){
+document.getElementById("r3").innerText = "Länge: "+Math.round(r)+" m";
+}
 }
 
+// 4
 function calc4(){
 let g=num("gw2"), b=num("bw2"), id=num("id3");
 let r = Math.sqrt((4000000g)/(pidensityb)+idid);
-if(!isNaN(r)) r4.innerText="AD: "+Math.round(r)+" mm";
+if(!isNaN(r)){
+document.getElementById("r4").innerText = "AD: "+Math.round(r)+" mm";
+}
 }
 
+// 5
 function calc5(){
 let l=num("l"), b=num("b"), d=num("d3")/1000;
 let r = lbddensity0.001;
-if(!isNaN(r)) r5.innerText="Gewicht: "+Math.round(r)+" kg";
+if(!isNaN(r)){
+document.getElementById("r5").innerText = "Gewicht: "+Math.round(r)+" kg";
+}
 }
 
+// 6
 function calc6(){
 let ad=num("ad2"), id=num("id4"), b=num("b2");
 let r = pidensityb(adad-idid)/4000000;
-if(!isNaN(r)) r6.innerText="Gewicht: "+Math.round(r)+" kg";
+if(!isNaN(r)){
+document.getElementById("r6").innerText = "Gewicht: "+Math.round(r)+" kg";
+}
 }
 
 </script>
