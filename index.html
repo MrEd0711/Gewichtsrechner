@@ -81,7 +81,7 @@ input {
 
 <div class="field">
 <label>Dicke (µm)</label>
-<input id="dw" type="number" value="200">
+<input id="dw" type="number">
 </div>
 
 <div class="result" id="r1"></div>
@@ -102,7 +102,7 @@ input {
 
 <div class="field">
 <label>Dicke (µm)</label>
-<input id="d1" type="number" value="200">
+<input id="d1" type="number">
 </div>
 
 <div class="result" id="r2"></div>
@@ -123,7 +123,7 @@ input {
 
 <div class="field">
 <label>Dicke (µm)</label>
-<input id="d2" type="number" value="200">
+<input id="d2" type="number">
 </div>
 
 <div class="result" id="r3"></div>
@@ -165,7 +165,7 @@ input {
 
 <div class="field">
 <label>Dicke (µm)</label>
-<input id="d3" type="number" value="200">
+<input id="d3" type="number">
 </div>
 
 <div class="result" id="r5"></div>
@@ -199,59 +199,64 @@ input {
 const pi = Math.PI;
 const density = 7.85;
 
-// alle Inputs überwachen
+// Inputs überwachen
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", calculateAll);
 });
 
 function calculateAll(){
 
-    // µm → mm Umrechnung
-    let v1 = gw.value;
-    let v2 = bw.value;
-    let v3 = dw.value / 1000;
+    // Länge aus Gewicht
+    let v1 = Number(gw.value);
+    let v2 = Number(bw.value);
+    let v3 = Number(dw.value) / 1000;
 
-    if(v1 && v2 && v3){
+    if(!isNaN(v1) && !isNaN(v2) && !isNaN(v3) && v2>0 && v3>0){
         r1.innerText = "Länge: " + Math.round((v11000)/(v2v3density)) + " m";
     } else r1.innerText = "";
 
-    let v4 = ad.value;
-    let v5 = id.value;
-    let v6 = d1.value / 1000;
+    // AD / ID
+    let v4 = Number(ad.value);
+    let v5 = Number(id.value);
+    let v6 = Number(d1.value) / 1000;
 
-    if(v4 && v5 && v6){
+    if(!isNaN(v4) && !isNaN(v5) && !isNaN(v6) && v6>0){
         r2.innerText = "Länge: " + Math.round(pi(v4v4-v5v5)/(4v61000)) + " m";
     } else r2.innerText = "";
 
-    let v7 = wh.value;
-    let v8 = id2.value;
-    let v9 = d2.value / 1000;
+    // Wickelhöhe
+    let v7 = Number(wh.value);
+    let v8 = Number(id2.value);
+    let v9 = Number(d2.value) / 1000;
 
-    if(v7 && v8 && v9){
+    if(!isNaN(v7) && !isNaN(v8) && !isNaN(v9) && v9>0){
         r3.innerText = "Länge: " + Math.round(piv7(v7+v8)/(v91000)) + " m";
     } else r3.innerText = "";
 
-    let v10 = gw2.value;
-    let v11 = bw2.value;
-    let v12 = id3.value;
+    // Außendurchmesser
+    let v10 = Number(gw2.value);
+    let v11 = Number(bw2.value);
+    let v12 = Number(id3.value);
 
-    if(v10 && v11 && v12){
+    if(!isNaN(v10) && !isNaN(v11) && !isNaN(v12) && v11>0){
         r4.innerText = "AD: " + Math.round(Math.sqrt((4000000v10)/(pidensityv11)+v12v12)) + " mm";
     } else r4.innerText = "";
 
-    let v13 = l.value;
-    let v14 = b.value;
-    let v15 = d3.value / 1000;
+    // Gewicht aus Länge
+    let v13 = Number(l.value);
+    let v14 = Number(b.value);
+    let v15 = Number(d3.value) / 1000;
 
-    if(v13 && v14 && v15){
+    if(!isNaN(v13) && !isNaN(v14) && !isNaN(v15)){
         r5.innerText = "Gewicht: " + Math.round(v13v14v15density0.001) + " kg";
     } else r5.innerText = "";
 
-    let v16 = ad2.value;
-    let v17 = id4.value;
-    let v18 = b2.value;
+    // Gewicht AD/ID
+    let v16 = Number(ad2.value);
+    let v17 = Number(id4.value);
+    let v18 = Number(b2.value);
 
-    if(v16 && v17 && v18){
+    if(!isNaN(v16) && !isNaN(v17) && !isNaN(v18)){
         r6.innerText = "Gewicht: " + Math.round(pidensityv18(v16v16-v17v17)/4000000) + " kg";
     } else r6.innerText = "";
 }
